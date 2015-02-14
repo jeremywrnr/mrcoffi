@@ -10,6 +10,7 @@ int changeState(String ip) {
         digitalWrite(led, HIGH);
         digitalWrite(led2, HIGH);
     }
+    return 1;
 }
 
 void setup() {
