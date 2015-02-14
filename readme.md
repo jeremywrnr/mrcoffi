@@ -1,7 +1,7 @@
 Mr. Cof-Fi
 ==========
 
-## Internet Conected Mr Coffee
+## Internet Connected Mr. Coffee
 
 Made for hackcooper 2015.
 
