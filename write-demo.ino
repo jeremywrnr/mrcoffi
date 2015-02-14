@@ -17,6 +17,7 @@ void setup() {
     Spark.function("swap", changeState);
     pinMode(led, OUTPUT);
     pinMode(led2, OUTPUT);
+    digitalWrite(led, HIGH);
 }
 
 void loop() { }
