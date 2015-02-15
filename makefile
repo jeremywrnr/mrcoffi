@@ -1,5 +1,5 @@
 id=53ff6f066667574816342567
-src='write-demo.ino'
+src='brew.ino'
 out='output.bin'
 
 all: clean compile
