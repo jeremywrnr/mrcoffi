@@ -27,9 +27,14 @@ int measureCups(String ip) {
     cups = 0;
 
     // check and sum all levels
-    for( int pin = A0; A0 < A7; pin++ ){
-        cups += checkFloater(pin);
-    }
+    cups += checkFloater(A0);
+    cups += checkFloater(A1);
+    cups += checkFloater(A2);
+    cups += checkFloater(A3);
+    cups += checkFloater(A4);
+    cups += checkFloater(A5);
+    cups += checkFloater(A6);
+    cups += checkFloater(A7);
 
     // return the amount of cups
     return cups;
@@ -67,9 +72,14 @@ void setup() {
     // pin mode definitions
     pinMode(led, OUTPUT);
     pinMode(led2, OUTPUT);
-    for( int pin = A0; A0 < A7; pin++ ){
-        pinMode(pin, INPUT);
-    }
+    pinMode(A0, INPUT);
+    pinMode(A1, INPUT);
+    pinMode(A2, INPUT);
+    pinMode(A3, INPUT);
+    pinMode(A4, INPUT);
+    pinMode(A5, INPUT);
+    pinMode(A6, INPUT);
+    pinMode(A7, INPUT);
 
     // initial conditions
     digitalWrite(led, HIGH);
