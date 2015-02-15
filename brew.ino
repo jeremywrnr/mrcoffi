@@ -4,6 +4,8 @@
 int led = D0; // You'll need to wire an LED to this one to see it blink.
 int led2 = D7; // This one is the built-in tiny one to the right of the USB jack
 int cups = 0; // placeholder for cup measurement amount
+int brewing = 0; // status var for currently brewing
+int startTime = 0; // marker to determine when to timeout
 char publishString[64]; // placeholder for json output
 
 // turn the machine on or off
@@ -13,6 +15,7 @@ int changeState(String ip) {
     if( digitalRead(led) == LOW ){
         digitalWrite(led, HIGH);
         digitalWrite(led2, HIGH);
+        brewing = 1;
 
         // measure & publish amount of cups to brew
         cups = measureCups();
@@ -24,7 +27,11 @@ int changeState(String ip) {
         // turn the machine off
         digitalWrite(led, LOW);
         digitalWrite(led2, LOW);
+        brewing = 0;
+        return 1;
     }
+
+    // something FUNKY going on
     return 0;
 }
 
@@ -66,6 +73,13 @@ int checkFloater(int pin) {
 
 }
 
+// check for timeout conditions
+void checkTimeout() {
+    unsigned long now = millis();
+    // after 15 seconds, timeout
+    if (now-startTime>15000UL) changeState('local');
+}
+
 void setup() {
 
     // spark core definitions
@@ -88,5 +102,9 @@ void setup() {
 
 }
 
-void loop(){}
+void loop(){
+    // check brew status for timeout
+    if( brewing ) checkTimeout();
+}
+
 
