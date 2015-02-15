@@ -77,7 +77,7 @@ int checkFloater(int pin) {
 // check for timeout conditions,after 15 seconds
 void checkTimeout() {
     unsigned long now = millis();
-    if (now-startTime>15000UL) changeState("local");
+    if (now-startTime>60000UL) changeState("local");
 }
 
 void setup() {
