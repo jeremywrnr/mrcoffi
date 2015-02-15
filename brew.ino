@@ -84,7 +84,7 @@ void setup() {
     pinMode(A7, INPUT_PULLUP);
 
     // initial conditions
-    digitalWrite(led, HIGH);
+    digitalWrite(led, LOW);
 
 }
 
