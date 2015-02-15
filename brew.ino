@@ -141,7 +141,7 @@ void displayWelcome(){
     Serial1.write(0x01); // clear display
     selectLineOne();
     Serial1.write(" Welcome to the");
-    Serial1.write("         Mr.Coffi!");
+    Serial1.write("        Mr.Cof-Fi!");
     lcdTime = millis();
 }
 
