@@ -7,6 +7,8 @@ int cups = 0; // placeholder for cup measurement amount
 int brewing = 0; // status var for currently brewing
 char publishString[64]; // placeholder for json output
 unsigned long startTime = 0; // determine when to timeout
+unsigned long lcdTime = 0; // determine when to swap LCD text
+int lcdStatus = 0; // holds which LCD screen status to display
 
 // turn the machine on or off
 int changeState(String ip) {
@@ -17,6 +19,7 @@ int changeState(String ip) {
         digitalWrite(led2, HIGH);
         startTime = millis();
         brewing = 1;
+        displayBrewing();
 
         // measure & publish amount of cups to brew
         cups = measureCups();
@@ -69,7 +72,7 @@ int checkFloater(int pin) {
     }
 
     // only return high if you get 5/5 pos reads
-    if( test > 4 ) level = 1;
+    if( test > 4 ) level = 2;
     return level;
 
 }
@@ -78,6 +81,74 @@ int checkFloater(int pin) {
 void checkTimeout() {
     unsigned long now = millis();
     if (now-startTime>60000UL) changeState("local");
+}
+
+// LCD Functions:
+// check for timeout conditions for LCD
+void checkLCDTimeout() {
+    unsigned long now = millis();
+    if (now-lcdTime>5000UL && lcdStatus == 0){
+        lcdStatus = 1;
+        displayCups();
+    }
+    else if (now-lcdTime>5000UL && lcdStatus == 1){
+        lcdStatus = 2; 
+        displaySlogan();
+    }
+    else if (now-lcdTime>5000UL && lcdStatus == 2){
+        lcdStatus = 0;
+        displayWelcome();   
+    }
+}
+
+void selectLineOne(){  //puts the cursor at line 0 char 0.
+   Serial.write(0xFE); //command flag
+   Serial.write(128);  //position
+   delay(40);
+}
+void selectLineTwo(){  //puts the cursor at line 0 char 0.
+   Serial.write(0xFE); //command flag
+   Serial.write(192);  //position
+   delay(40);
+}
+
+// display Mr. Coffi welcome message on LCD - status=0
+void displayWelcome(){
+    Serial1.write(0xFE); // command flag
+    Serial1.write(0x01); // clear display
+    selectLineOne();
+    Serial1.write(" Welcome to the");
+    Serial1.write("         Mr.Coffi!");
+    lcdTime = millis();
+}
+
+// read number of cups in tnak and display on LCD - status=1
+void displayCups(){
+    Serial1.write(0xFE); // command flag
+    Serial1.write(0x01); // clear display
+    selectLineOne();
+    Serial1.write("Cups in tank: ");
+    Serial1.print(measureCups(), HEX);
+    lcdTime = millis();
+}
+
+// display slogan on LCD - status=2
+void displaySlogan(){
+    Serial1.write(0xFE); // command flag
+    Serial1.write(0x01); // clear display
+    selectLineOne();
+    Serial1.write("     Yo for");
+    selectLineTwo();
+    Serial1.write("             some jo!");
+    lcdTime = millis();
+}
+
+// display brewing on LCD until done brewing
+void displayBrewing(){
+    Serial1.write(0xFE); // command flag
+    Serial1.write(0x01); // clear display
+    selectLineOne();
+    Serial1.write("Brewing...");
 }
 
 void setup() {
@@ -100,11 +171,16 @@ void setup() {
     // initial conditions
     digitalWrite(led, LOW);
 
+    // Serial LCD setup
+    Serial1.begin(9600);
+    delay(20);
+    displayWelcome();
 }
 
 void loop(){
     // check brew status for timeout
     if( brewing ) checkTimeout();
+    else checkLCDTimeout();
 }
 
 
