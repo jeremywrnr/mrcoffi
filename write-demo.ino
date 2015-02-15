@@ -13,8 +13,15 @@ int changeState(String ip) {
     return 1;
 }
 
+int measureCups(String ip) {
+    return 1;
+}
+
+int cups = 1;
+
 void setup() {
     Spark.function("swap", changeState);
+    Spark.variable("cups", &cups, INT);
     pinMode(led, OUTPUT);
     pinMode(led2, OUTPUT);
     digitalWrite(led, HIGH);
