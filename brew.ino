@@ -44,20 +44,18 @@ int measureCups(String ip) {
 // check variance of polling
 int checkFloater(int pin) {
 
-    int hi = 0;
-    int lo = 0;
+    int test = 0;
     int level = 0;
 
-    for( int i = 10; i; i++ ){
+    // loop over pin five times, check noise
+    for( int i = 0; i < 5; i++ ){
         if( digitalRead(pin) == LOW ){
-            lo++;
-        } else {
-            hi++;
+            test++;
         }
     }
 
-    // only return high if you get at least 8 high polls
-    if( hi > 8 ) level++;
+    // only return high if you get 5/5 pos reads
+    if( test > 4 ) level = 1;
     return level;
 
 }
@@ -72,17 +70,18 @@ void setup() {
     // pin mode definitions
     pinMode(led, OUTPUT);
     pinMode(led2, OUTPUT);
-    pinMode(A0, INPUT);
-    pinMode(A1, INPUT);
-    pinMode(A2, INPUT);
-    pinMode(A3, INPUT);
-    pinMode(A4, INPUT);
-    pinMode(A5, INPUT);
-    pinMode(A6, INPUT);
-    pinMode(A7, INPUT);
+    pinMode(A0, INPUT_PULLUP);
+    pinMode(A1, INPUT_PULLUP);
+    pinMode(A2, INPUT_PULLUP);
+    pinMode(A3, INPUT_PULLUP);
+    pinMode(A4, INPUT_PULLUP);
+    pinMode(A5, INPUT_PULLUP);
+    pinMode(A6, INPUT_PULLUP);
+    pinMode(A7, INPUT_PULLUP);
 
     // initial conditions
     digitalWrite(led, HIGH);
+
 }
 
 void loop(){}
