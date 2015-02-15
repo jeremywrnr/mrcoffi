@@ -3,25 +3,33 @@
 
 int led = D0; // You'll need to wire an LED to this one to see it blink.
 int led2 = D7; // This one is the built-in tiny one to the right of the USB jack
-int cups = 0; // placeholder for cup amounts
+int cups = 0; // placeholder for cup measurement amount
+char publishString[64]; // placeholder for json output
 
 // turn the machine on or off
 int changeState(String ip) {
 
-    // turn the machine off
+    // turn the machine on
     if( digitalRead(led) == LOW ){
         digitalWrite(led, HIGH);
         digitalWrite(led2, HIGH);
+
+        // measure & publish amount of cups to brew
+        cups = measureCups();
+        sprintf(publishString,"{\"Cups\": %d}",cups);
+        Spark.publish("Cups",publishString);
+        return 1;
+
     } else {
-        // turn the machine on
+        // turn the machine off
         digitalWrite(led, LOW);
         digitalWrite(led2, LOW);
     }
-    return 1;
+    return 0;
 }
 
 // check how many cups about to brew
-int measureCups(String ip) {
+int measureCups() {
 
     // reset cups
     cups = 0;
@@ -49,9 +57,7 @@ int checkFloater(int pin) {
 
     // loop over pin five times, check noise
     for( int i = 0; i < 5; i++ ){
-        if( digitalRead(pin) == LOW ){
-            test++;
-        }
+        if( digitalRead(pin) == LOW ) test++;
     }
 
     // only return high if you get 5/5 pos reads
@@ -64,8 +70,6 @@ void setup() {
 
     // spark core definitions
     Spark.function("swap", changeState);
-    Spark.function("mcups", measureCups);
-    Spark.variable("cups", &cups, INT);
 
     // pin mode definitions
     pinMode(led, OUTPUT);
