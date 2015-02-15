@@ -5,8 +5,10 @@ int led = D0; // You'll need to wire an LED to this one to see it blink.
 int led2 = D7; // This one is the built-in tiny one to the right of the USB jack
 int cups = 0; // placeholder for cup measurement amount
 int brewing = 0; // status var for currently brewing
+int shuttingDown = 0; // status for cleaning out water bin
 char publishString[64]; // placeholder for json output
-unsigned long startTime = 0; // determine when to timeout
+unsigned long tempTime = 0; // determine when to check if full
+unsigned long finishTime = 0; // determine when to timeout
 
 // turn the machine on or off
 int changeState(String ip) {
@@ -15,7 +17,8 @@ int changeState(String ip) {
     if( digitalRead(led) == LOW ){
         digitalWrite(led, HIGH);
         digitalWrite(led2, HIGH);
-        startTime = millis();
+        tempTime = millis();
+        finishTime = 0;
         brewing = 1;
 
         // measure & publish amount of cups to brew
@@ -76,8 +79,27 @@ int checkFloater(int pin) {
 
 // check for timeout conditions,after 15 seconds
 void checkTimeout() {
+
+    // get the current time
     unsigned long now = millis();
-    if (now-startTime>60000UL) changeState("local");
+
+    // only perform the check every 10s
+    if( now-tempTime>10000UL ){
+        // if cups are empty, countdown timer
+        if ( measureCups() == 0 && !shuttingDown ) {
+            finishTime = millis();
+            shuttingDown = 1;
+        }
+    }
+
+    // wait 30 seconds after finishing brewing
+    if( now-finishTime>30000UL && shuttingDown ){
+        sprintf(publishString,"{\"BrewStatus\": \"done\"}",cups);
+        Spark.publish("Brewdone",publishString);
+        changeState("local");
+        shuttingDown = 0;
+    }
+
 }
 
 void setup() {
