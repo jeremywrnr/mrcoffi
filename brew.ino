@@ -99,7 +99,7 @@ void checkTimeout() {
     // wait 30 seconds after finishing brewing
     if( now-finishTime>30000UL && shuttingDown ){
         sprintf(publishString,"{\"BrewStatus\": \"done\"}",cups);
-        Spark.publish("Brewdone",publishString);
+        Spark.publish("BrewDone",publishString);
         changeState("local");
         shuttingDown = 0;
     }
