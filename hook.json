@@ -1,0 +1,13 @@
+{
+    "eventName": "Cups",
+    "url": "https://blazing-heat-8403.firebaseio.com/Cups.json",
+    "coreID": "53ff6f066667574816342567",
+    "_": "The following parameters are optional",
+    "requestType": "POST",
+    "headers": null,
+    "query": null,
+    "json": null,
+    "auth": null,
+    "mydevices": true
+}
+
