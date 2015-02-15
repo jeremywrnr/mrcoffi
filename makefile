@@ -5,6 +5,9 @@ out='output.bin'
 all: clean compile
 	spark flash $(id) $(out)
 
+getid:
+	export id=$(spark list 2&>1 | sed -ne 's/.*(\(.*\)) is online/\1/p')
+
 clean:
 	find . -type f -iname "firmware*" -exec rm {} \;
 
