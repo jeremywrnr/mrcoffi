@@ -20,7 +20,6 @@ int changeState(String ip) {
     return 1;
 }
 
-
 // check how many cups about to brew
 int measureCups(String ip) {
 
@@ -29,7 +28,7 @@ int measureCups(String ip) {
 
     // check and sum all levels
     for (int pin = A0; pin <= A7; ++pin) {
-        digitalRead(A0) && cups++;
+        digitalRead(pin) && cups++;
     }
 
     return cups;
