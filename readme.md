@@ -1,5 +1,7 @@
-Mr. Cof-Fi *(Coffee + WiFi) = (Cof-Fi)*
-=======================================
+Mr. Cof-Fi
+==========
+
+-> *(Coffee + WiFi) = (Cof-Fi)* <-
 
 Brewing the internet @ [hackcooper][hc] 2015.
 
