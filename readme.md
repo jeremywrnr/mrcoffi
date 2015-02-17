@@ -1,12 +1,12 @@
 Mr. Cof-Fi
 ==========
 
-## Internet Connected Mr. Coffee
+*(Coffee + WiFi) = (Cof-Fi)*
 
-Made for [hackcooper][hc] 2015.
+Brewing the internet for [hackcooper][hc] 2015.
 
-Code for a system that uses the [spark core][hc] and the its [command
-line interface][cli] to turn Mr. Coffee into Mr. Cof-Fi.
+A system that uses the Yo, [spark core][sp] and the its [command
+line interface][cli] tool to turn Mr. Coffee into Mr. Cof-Fi.
 
 [hc]:http://hackcooper.org/
 [sp]:https://spark.io/build
