@@ -1,24 +1,24 @@
 //  BREWING THE INTERNET
 //  hackcooper 2015
 
-int led = D0; // You'll need to wire an LED to this one to see it blink.
+int mrcf = D0; // this is the pin hooked up to the mr coffee heater relay
 int led2 = D7; // This one is the built-in tiny one to the right of the USB jack
 int cups = 0; // placeholder for cup measurement amount
 int brewing = 0; // status var for currently brewing
 int shuttingDown = 0; // status for cleaning out water bin
+int lcdStatus = 0; // holds which LCD screen status to display
 char publishString[64]; // placeholder for json output
 unsigned long tempTime = 0; // determine when to check if full
 unsigned long finishTime = 0; // determine when to timeout
 unsigned long startTime = 0; // determine when to timeout
 unsigned long lcdTime = 0; // determine when to swap LCD text
-int lcdStatus = 0; // holds which LCD screen status to display
 
 // turn the machine on or off
 int changeState(String ip) {
 
     // turn the machine on
-    if( digitalRead(led) == LOW ){
-        digitalWrite(led, HIGH);
+    if( digitalRead(mrcf) == LOW ){
+        digitalWrite(mrcf, HIGH);
         digitalWrite(led2, HIGH);
         tempTime = millis();
         finishTime = 0;
@@ -33,7 +33,7 @@ int changeState(String ip) {
 
     } else {
         // turn the machine off
-        digitalWrite(led, LOW);
+        digitalWrite(mrcf, LOW);
         digitalWrite(led2, LOW);
         brewing = 0;
         return 1;
@@ -180,7 +180,7 @@ void setup() {
     Spark.function("swap", changeState);
 
     // pin mode definitions
-    pinMode(led, OUTPUT);
+    pinMode(mrcf, OUTPUT);
     pinMode(led2, OUTPUT);
     pinMode(A0, INPUT_PULLUP);
     pinMode(A1, INPUT_PULLUP);
@@ -192,7 +192,7 @@ void setup() {
     pinMode(A7, INPUT_PULLUP);
 
     // initial conditions
-    digitalWrite(led, LOW);
+    digitalWrite(mrcf, LOW);
 
     // Serial LCD setup
     Serial1.begin(9600);
