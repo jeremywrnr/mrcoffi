@@ -11,6 +11,10 @@ warer level detector to augment our control system and increase safety. You can
 check out the submission page to hackcooper [here][hl] or check out our web
 interface that pairs with Mr. Cof-Fi [here][jw].
 
+### getting the ID of your core
+
+    sparkid=$(make getid)
+
 ### video demo
 
 [![MRCOFFI DEMO YO](http://img.youtube.com/vi/uMjU8CY2lLY/0.jpg)](http://www.youtube.com/watch?v=uMjU8CY2lLY)

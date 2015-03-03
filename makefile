@@ -1,15 +1,19 @@
-id=53ff6f066667574816342567
+# BREWING THE INTERNET
 src='brew.ino'
 out='output.bin'
 
+# use `make getid` to set sparkid externally
+# sparkid=$(make getid)
+export sid=$(shell echo $(sparkid))
+
 all: clean compile
-	spark flash $(id) $(out)
+	spark flash $(sid) $(out)
 
 getid:
-	export id=$(spark list 2&>1 | sed -ne 's/.*(\(.*\)) is online/\1/p')
+	@spark list 2>/dev/null | sed -ne 's/.*(\(.*\)) is online/\1/p'
 
 clean:
-	find . -type f -iname "firmware*" -exec rm {} \;
+	find . -type f -iname "firmware_*" -exec rm {} \;
 
 compile: *.ino
 	spark compile $(src)

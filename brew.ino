@@ -125,14 +125,14 @@ void checkLCDTimeout() {
 }
 
 void selectLineOne(){  //puts the cursor at line 0 char 0.
-   Serial.write(0xFE); //command flag
-   Serial.write(128);  //position
-   delay(40);
+    Serial.write(0xFE); //command flag
+    Serial.write(128);  //position
+    delay(40);
 }
 void selectLineTwo(){  //puts the cursor at line 0 char 0.
-   Serial.write(0xFE); //command flag
-   Serial.write(192);  //position
-   delay(40);
+    Serial.write(0xFE); //command flag
+    Serial.write(192);  //position
+    delay(40);
 }
 
 // display Mr. Coffi welcome message on LCD - status=0
