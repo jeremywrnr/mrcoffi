@@ -96,8 +96,8 @@ void checkTimeout() {
         }
     }
 
-    // wait 30 seconds after finishing brewing
-    if( now-finishTime>30000UL && shuttingDown ){
+    // wait 300 seconds after finishing brewing
+    if( now-finishTime>300000UL && shuttingDown ){
         sprintf(publishString,"{\"BrewStatus\": \"done\"}",cups);
         Spark.publish("BrewDone",publishString);
         changeState("local");
@@ -172,6 +172,8 @@ void displayBrewing(){
     Serial1.write(0x01); // clear display
     selectLineOne();
     Serial1.write("Brewing...");
+    selectLineTwo();
+    Serial1.write("             some jo!");
 }
 
 void setup() {
