@@ -4,7 +4,7 @@ out='output.bin'
 
 # use `make getid` to set sparkid externally
 # sparkid=$(make getid)
-export sid=$(shell echo $(sparkid))
+sid=$(shell echo $(sparkid))
 
 all: clean compile
 	spark flash $(sid) $(out)
