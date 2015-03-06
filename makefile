@@ -3,10 +3,11 @@ src='brew.ino'
 out='output.bin'
 
 # use `make getid` to set sparkid externally
-# sparkid=$(make getid)
+# export sparkid=$(make getid)
 sid=$(shell echo $(sparkid))
 
 all: clean compile
+	@echo SparkId = $(sid)
 	spark flash $(sid) $(out)
 
 getid:
