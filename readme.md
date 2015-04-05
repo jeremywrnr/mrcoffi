@@ -13,7 +13,7 @@ interface that pairs with Mr. Cof-Fi [here][jw].
 
 ### getting the ID of your core
 
-    sparkid=$(make getid)
+    export sparkid=$(make getid)
 
 ### video demo
 
