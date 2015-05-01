@@ -38,7 +38,7 @@ int brew(String ip) {
 
         // measure & publish amount of cups to brew
         cups = measure_cups();
-        sprintf(publish_string,"{\"Cups\": %d}",cups);
+        sprintf(publish_string,"{'Cups': %d, 'IP': %s}",cups,ip);
         Spark.publish("Cups",publish_string);
         return 1;
     }
