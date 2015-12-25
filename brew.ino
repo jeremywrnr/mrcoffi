@@ -7,7 +7,7 @@ int cups = 0; // placeholder for cup measurement amount
 int brewing = 0; // status var for currently brewing
 int lcd_status = 0; // holds which LCD screen status to display
 int shutting_down = 0; // status for cleaning out water bin
-char publish_string[64]; // placeholder for json output
+String publish_string; // placeholder for json output
 unsigned long lcd_time = 0; // determine when to swap LCD text
 unsigned long temp_time = 0; // determine when to check if full
 unsigned long start_time = 0; // determine when to timeout
@@ -38,8 +38,9 @@ int brew(String ip) {
 
         // measure & publish amount of cups to brew
         cups = measure_cups();
-        sprintf(publish_string,"{'Cups': %d, 'IP': %s}",cups,ip);
-        Spark.publish("Cups",publish_string);
+        /*sprintf(publish_string, "{'Cups': %d, 'IP': %s}", cups, ip);*/
+        publish_string = "{'Cups': cups, 'IP': ip}";
+        Particle.publish("Cups", publish_string);
         return 1;
     }
 
@@ -101,8 +102,9 @@ void check_time() {
     // wait 300 seconds after finishing brewing
     if( now-finish_time>300000UL && shutting_down ){
         power_off(); // actually turn off machine
-        sprintf(publish_string,"{\"Brew_status\": \"done\"}",cups);
-        Spark.publish("Brew_done",publish_string);
+        /*sprintf(publish_string,"{\"Brew_status\": \"done\"}",cups);*/
+        publish_string = "{'Brew_status': 'done'}";
+        Particle.publish("Brew_done",publish_string);
         shutting_down = 0;
     }
 
@@ -124,26 +126,26 @@ void check_lcd() {
     }
 }
 
-void select_line_one(){  //puts the cursor at line 0 char 0.
+void select_line_one() {//puts the cursor at line 0 char 0.
     Serial.write(0xFE); //command flag
     Serial.write(128);  //position
     delay(40);
 }
 
-void select_line_two(){  //puts the cursor at line 1 char 0.
+void select_line_two() {//puts the cursor at line 1 char 0.
     Serial.write(0xFE); //command flag
     Serial.write(192);  //position
     delay(40);
 }
 
-void prepare_serial(){
+void prepare_serial() {
     Serial1.write(0xFE); // command flag
     Serial1.write(0x01); // clear display
     select_line_one();    // call above method
 }
 
 // display Mr. Coffi welcome message on LCD - status=0
-void display_welcome(){
+void display_welcome() {
     prepare_serial();
     Serial1.write(" Welcome to the");
     Serial1.write("        Mr.Cof-Fi!");
@@ -151,7 +153,7 @@ void display_welcome(){
 }
 
 // read number of cups in tank and display on LCD - status=1
-void display_cups(){
+void display_cups() {
     prepare_serial();
     Serial1.write("Cups in tank: ");
     Serial1.print(measure_cups(), HEX);
@@ -159,7 +161,7 @@ void display_cups(){
 }
 
 // display slogan on LCD - status=2
-void display_slogan(){
+void display_slogan() {
     prepare_serial();
     Serial1.write("     Yo for");
     select_line_two();
@@ -168,7 +170,7 @@ void display_slogan(){
 }
 
 // display brewing on LCD until done brewing
-void display_brewing(){
+void display_brewing() {
     prepare_serial();
     Serial1.write("Brewing...");
     select_line_two();
@@ -178,7 +180,7 @@ void display_brewing(){
 void setup() {
 
     // spark core definitions
-    Spark.function("brew", brew);
+    Particle.function("brew", brew);
 
     // pin mode definitions
     pinMode(mrcf, OUTPUT);
@@ -202,7 +204,7 @@ void setup() {
 
 }
 
-void loop(){
+void loop() {
     // check brew status for timeout
     if( brewing ) check_time();
     else check_lcd();
