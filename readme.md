@@ -1,5 +1,5 @@
-Mr. Cof-Fi
-==========
+mr coffi
+========
 
 -> *(Coffee + WiFi) = (Cof-Fi)* <-
 
@@ -31,3 +31,4 @@ mister cof-fi is finished brewing.
 [cli]:http://docs.spark.io/cli/
 [jw]:http://jeremywrnr.com/Mr.Cof-Fi/
 [hl]:https://www.hackerleague.org/hackathons/hackcooper-2015/hacks/mr-cof-fi
+
